@@ -1,0 +1,47 @@
+*{
+	font-family: Tahoma;
+}
+.main{
+	margin-top: 20px;
+	width: 450px
+}
+.col{
+	display: flex;
+}
+.price{
+	color: red;
+	font-weight: bold;
+	font-size: 25px;
+}
+.title{
+	text-transform: uppercase;
+	font-weight: normal;
+	font-size: 20px;
+}
+.description > p{
+	font-weight: inherit;
+}
+
+.num{
+	display: flex;
+	margin-bottom: 15px;
+}
+button{
+	height: 30px;
+	border: solid 1px gray;
+	border-radius: 3px;
+}
+.add{
+	position: relative;
+	left: 30px;
+}
+.delete{
+	width: 24px;
+	position: relative;
+	left: -29px;
+}
+input{
+	text-align: center;
+	width: 35%;
+
+}
