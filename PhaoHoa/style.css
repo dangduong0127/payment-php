@@ -64,13 +64,14 @@ ul{
 	left: -25px;
 }
 .add{
+	width: 24px;
 	position: relative;
-	left: 30px;
+	left: 28px;
 }
 .delete{
 	width: 24px;
 	position: relative;
-	left: -29px;
+	left: -27px;
 }
 button{
 	height: 30px;
@@ -181,11 +182,46 @@ li{
 	#radio3:checked ~ .first{
 		margin-left: -200%;
 	}
+	.navigation-auto{
+		position: absolute;
+		width: 500px;
+		left: -60px;
+		margin-top: 629px;
+		display: flex;
+		justify-content: center;
+		
+	}
+	.navigation-auto > div{
+		border: 2px solid gray;
+		padding: 5px;
+		border-radius: 10px;
+		transition: 1s;
+	}
+	.navigation-auto div:not(:last-child){
+		margin-right: 10px;
+	}
+
+	#radio1:checked ~ .navigation-auto .auto-btn1{
+		background: gray;
+	}
+	#radio2:checked ~ .navigation-auto .auto-btn2{
+		background: gray;
+	}
+	#radio3:checked ~ .navigation-auto .auto-btn3{
+		background: gray;
+	}
 
 @media only screen and (max-width: 800px) {
 	.main{
 		position: absolute;
 		top: 850px;
+		width: 390px!important;
+	}
+	.slider{
+		-webkit-overflow-scrolling: touch;
+	}
+	.description{
+		width: 390px!important;
 	}
 	.crt{
 		display: none;

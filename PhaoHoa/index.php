@@ -1,53 +1,15 @@
+<?php
+	require_once('layouts/header.php');
+	foreach($lastestItems as $product){}
 
-<!DOCTYPE html>
-<html>
-<head>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<script src="https://kit.fontawesome.com/98638255fc.js" crossorigin="anonymous"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, 
-user-scalable=no">
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<title>Giàn Phun Viên</title>
-</head>
-<body>
-	<div class="header">
-		<div class="category">
-			<ul class="list" >
-				<li>
-					<a href="index.php">
-						<!--<i class="fa-sharp fa-solid fa-house"></i><br>-->
-						<span>Trang Chủ</span>
-					</a>
-				</li>
-				<li>
-					<a href="cart.php" class="">
-						<span>Giỏ Hàng</span>
-					</a>
-				</li>
-				<div class="crt">
-					<img src="img/DDlogoW.png">
-				</div>
-				<li>
-					<a href="contact.php" class="">
-						<span>Liên Hệ</span>
-					</a>
-				</li>
-				<li>
-					<a href="login.php" class="">
-						<span>Đăng Nhập</span>
-					</a>
-				</li>
-			</ul>
-		</div>
-	</div>
+?>
 	<div class="logow">
 		<img src="img/DDlogo.png">
 	</div>
 
 	<div class="single-product">
 		<div class="main-frame">
-			<div class="slider">
+			<div class="">
 				<div class="slides">
 					<input type="radio" name="radio-btn" id="radio1">
 					<input type="radio" name="radio-btn" id="radio2">
@@ -80,10 +42,10 @@ user-scalable=no">
 			</div>
 		<div class="main">
 			<div class="title">
-				<p>Giàn phun viên</p>
+				<p><?=$product['title']?></p>
 			</div>
 			<div class="price">
-				<p>550.000 VNĐ</p>
+				<p><?=number_format($product['discount'])?> VNĐ</p>
 			</div>
 			<div class="delivery">
 				<span style="margin-right: 20px;">Vận chuyển:</span>
@@ -93,11 +55,10 @@ user-scalable=no">
 			</div>
 			<div class="description" style="width: 600px;">
 				<span style="margin-right: 20px;">Mô tả:</span>
-				<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Sử dụng an toàn và hợp pháp
-				chuẩn hàng bộ quốc phòng z121
-				Tầm cao 25m đến 30m
-				Sản phẩm nằm trong danh mục các sản phẩm được phép sử dụng của Nghị định số 137/2020/NĐ-CP của Chính phủ.</p>
-				<p style="margin-top: -15px">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp *Điều 17, Nghị định 137 quy định: Cơ quan, tổ chức, doanh nghiệp, cá nhân đủ 18 tuổi trở lên có năng lực hành vi dân sự đầy đủ được sử dụng phao' hoa trong các trường hợp: lễ, tết, sinh nhật, cưới hỏi, hội nghị, khai trương, ngày kỷ niệm và trong hoạt động văn hóa, nghệ thuật.</p>
+				<?=$product['description']?>
+			</div>
+			<div class="phone_number" style="margin-bottom: 10px; color: red;">
+					<b>Liên hệ: 0705585612</b>
 			</div>
 			<div class="under">
 						<div class="numb">
@@ -109,12 +70,54 @@ user-scalable=no">
 					</div>
 				</div>
 				<div class="footer">
-					<button class="btn-buy btn-success">Mua hàng</button>
+					<button class="btn-buy btn-success" onclick="addCart(<?=$product['id']?>, $('[name=num]').val())">Thêm vào giỏ</button>
 				</div>
 			</div>
 			</div>
 		</div>
 	</div>
+	<script src="https://kit.fontawesome.com/98638255fc.js" crossorigin="anonymous"></script>
+	<?php
+		if(!isset($_SESSION['cart'])){
+				$_SESSION['cart'] = [];
+		}
+		$count = 0;
+		foreach($_SESSION['cart'] as $item){
+			$count += $item['num'];
+		}
+	?>
+	<span class="cart_icon">
+    <span class="cart_count"><?=$count?></span>
+    <a href="cart/" style="color:grey;"><i class="fa-solid fa-cart-shopping"></i></a>
+  </span>
+	<style type="text/css">
+    .cart_icon {
+      position: fixed;
+      z-index: 999;
+      right: 20px;
+      top: 88%;
+      font-size: 45px;
+      
+    }
+    .cart_icon > .cart_count{
+      background-color: red;
+      border-radius: 20px;
+      height: 100%;
+      width: 100%;
+      font-size: 15px;
+      color: white;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      padding-left: 6px;
+      padding-right: 6px;
+      position: relative;
+      bottom: 30px;
+      left: 60px;
+      font-weight: bold;
+
+    }
+  </style>
+  
 	<script type="text/javascript">
   function increaseCart(delta){
     num = parseInt($('[name = num]').val());
@@ -126,6 +129,28 @@ user-scalable=no">
   function fixCartNum(){
     $('[name = num]').val(Math.abs($('[name = num]').val()));
   }
+
+  function addCart(productId, num) {
+  	$.post('api/ajax_request.php', {
+  		'action':'cart',
+  		'id': productId,
+  		'num': num
+  	}, function(data){
+  		location.reload()
+  	})
+  }
+
+  var counter = 1;
+  setInterval(function(){
+  	document.getElementById('radio' + counter).checked = true;
+  	counter++;
+  	if(counter > 4){
+  		counter = 1;
+  	}
+  }, 5500);
 </script>
 </body>
 </html>
+<?php
+require_once('footer.php');
+	?>
